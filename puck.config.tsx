@@ -16,6 +16,20 @@ type Props = {
 
 export const config: Config<Props> = {
   components: {
+    HeadingBlock: {
+      fields: {
+        title: {
+          type: "text",
+          label: "Title"
+        }
+      },
+      defaultProps: {
+        title: ""
+      },
+      render: ({ title }) => {
+        return <h1>{title}</h1>;
+      }
+    },
     Example: {
       fields: {
         image: {
