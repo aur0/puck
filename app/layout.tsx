@@ -1,4 +1,6 @@
 import "./styles.css";
+import "@radix-ui/themes/styles.css";
+import { Theme } from "@radix-ui/themes";
 
 export default function RootLayout({
   children,
@@ -7,7 +9,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">
+          {children}
+        </Theme>
+      </body>
     </html>
   );
 }
