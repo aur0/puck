@@ -4,6 +4,14 @@ import { Dialog, Button } from "@radix-ui/themes";
 
 type Props = {
   HeadingBlock: { title: string };
+  Example: {
+    image: {
+      webp_url: string | null;
+      webp_medium_url: string | null;
+      original_url: string | null;
+      original_medium_url: string | null;
+    }
+  };
 };
 
 export const config: Config<Props> = {
@@ -14,8 +22,18 @@ export const config: Config<Props> = {
           type: "custom",
           label: "Select Image",
           render: ({ value, onChange }: { 
-            value: ImageData; 
-            onChange: (data: ImageData) => void 
+            value: {
+              webp_url: string | null;
+              webp_medium_url: string | null;
+              original_url: string | null;
+              original_medium_url: string | null;
+            };
+            onChange: (data: {
+              webp_url: string | null;
+              webp_medium_url: string | null;
+              original_url: string | null;
+              original_medium_url: string | null;
+            }) => void;
           }) => {
             const [loading, setLoading] = useState(false);
             const [apiResponse, setApiResponse] = useState(null);
@@ -86,7 +104,7 @@ export const config: Config<Props> = {
           original_medium_url: null
         }
       },
-      render: ({ image }: ExampleProps) => {
+      render: ({ image }: Props["Example"]) => {
         return (
           <picture>
             <source 
