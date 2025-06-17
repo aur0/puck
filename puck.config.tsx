@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { FieldLabel } from "@measured/puck";
-import { Dialog, Button, Inset, Flex } from "@radix-ui/themes";
+import type { Config } from "@measured/puck";
+import { useState } from "react";
+import { Dialog, Button } from "@radix-ui/themes";
 
-const config = {
+type Props = {
+  HeadingBlock: { title: string };
+};
+
+export const config: Config<Props> = {
   components: {
     Example: {
       fields: {
         image: {
           type: "custom",
           label: "Select Image",
-          render: ({ value, onChange }) => {
+          render: ({ value, onChange }: { 
+            value: ImageData; 
+            onChange: (data: ImageData) => void 
+          }) => {
             const [loading, setLoading] = useState(false);
             const [apiResponse, setApiResponse] = useState(null);
 
@@ -79,28 +86,28 @@ const config = {
           original_medium_url: null
         }
       },
-      render: ({ image }) => {
+      render: ({ image }: ExampleProps) => {
         return (
           <picture>
-          <source 
-            media="(max-width: 768px)" 
-            srcSet={image?.webp_medium_url || image?.original_medium_url} 
-            type="image/webp" 
-          />
-          <source 
-            media="(max-width: 768px)" 
-            srcSet={image?.original_medium_url} 
-          />
-          <source 
-            srcSet={image?.webp_url || image?.original_url} 
-            type="image/webp" 
-          />
-          <img 
-            src={image?.original_url} 
-            alt="Selected image" 
-            style={{ width: '100%', height: 'auto' }} 
-          />
-        </picture>   
+            <source 
+              media="(max-width: 768px)" 
+              srcSet={image?.webp_medium_url || image?.original_medium_url} 
+              type="image/webp" 
+            />
+            <source 
+              media="(max-width: 768px)" 
+              srcSet={image?.original_medium_url} 
+            />
+            <source 
+              srcSet={image?.webp_url || image?.original_url} 
+              type="image/webp" 
+            />
+            <img 
+              src={image?.original_url} 
+              alt="Selected image" 
+              style={{ width: '100%', height: 'auto' }} 
+            />
+          </picture>   
         );
       },
     },
