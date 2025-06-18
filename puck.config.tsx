@@ -274,6 +274,36 @@ export const config: Config<Props> = {
         );
       },
     },
+
+    SimpleImageBlock: {
+      fields: {
+        url: { type: "text" },
+        altText: { type: "text" },
+        width: { 
+          type: "number",
+          defaultValue: 100
+        },
+        height: { 
+          type: "number",
+          defaultValue: 100
+        }
+      },
+      defaultProps: {
+        url: "",
+        altText: "",
+        width: 100,
+        height: 100
+      },
+      render: ({ url, altText, width, height }) => (
+        <img
+          src={url}
+          alt={altText}
+          width={width}
+          height={height}
+          style={{ maxWidth: "100%", height: "auto" }}
+        />
+      ),
+    },
   },
 };
 
