@@ -6,7 +6,7 @@ import { imageFields } from "./components/fields/images";
 
 
 
-export const config: Config<Props> = {
+export const config: Config = {
   components: {
     SimpleTextBlock: {  
       fields: {
@@ -34,11 +34,9 @@ export const config: Config<Props> = {
         altText: { type: "text" },
         width: { 
           type: "number",
-          defaultValue: 100
         },
         height: { 
           type: "number",
-          defaultValue: 100
         }
       },
       defaultProps: {
