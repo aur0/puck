@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, Button } from "@radix-ui/themes";
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 type ImageData = {
   webp_url: string | null;
@@ -15,6 +16,27 @@ type FieldDefinition = {
   render: ({ value, onChange }: { value: ImageData; onChange: (data: ImageData) => void; }) => ReactNode;
 };
 
+const useImageSelector = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [apiResponse, setApiResponse] = useState<any>(null);
+
+  const fetchImages = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/get-images');
+      const data = await res.json();
+      setApiResponse(data);
+    } catch (err) {
+      console.error('Error:', err);
+      setApiResponse({ error: err.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, apiResponse, fetchImages };
+};
+
 export const imageFields: FieldDefinition = {
   type: "custom",
   label: "Select Image",
@@ -22,22 +44,7 @@ export const imageFields: FieldDefinition = {
     value: ImageData;
     onChange: (data: ImageData) => void;
   }): ReactNode => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [apiResponse, setApiResponse] = useState<any>(null);
-
-    const fetchImages = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch('/api/get-images');
-        const data = await res.json();
-        setApiResponse(data);
-      } catch (err) {
-        console.error('Error:', err);
-        setApiResponse({ error: err.message });
-      } finally {
-        setLoading(false);
-      }
-    };
+    const { loading, apiResponse, fetchImages } = useImageSelector();
 
     return (
       <Dialog.Root>
@@ -58,7 +65,9 @@ export const imageFields: FieldDefinition = {
                   cursor: 'pointer',
                   border: '1px solid #ccc',
                   padding: '0.5rem',
-                  borderRadius: '4px'
+                  borderRadius: '4px',
+                  position: 'relative',
+                  height: '150px'
                 }}
                 onClick={() => {
                   onChange({
@@ -69,10 +78,12 @@ export const imageFields: FieldDefinition = {
                   });
                 }}
               >
-                <img
+                <Image
                   src={image.original_thumbnail_url}
                   alt={`Preview ${index + 1}`}
-                  style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
+                  fill
+                  style={{ objectFit: 'cover', borderRadius: '4px' }}
+                  sizes="(max-width: 150px) 100vw, 150px"
                 />
               </div>
             ))}
