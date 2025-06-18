@@ -22,6 +22,7 @@ export const config: Config = {
         height: 100
       },
       render: ({ url, altText, width, height }) => (
+        url ? (
           <Image
             src={url}
             alt={altText}
@@ -29,6 +30,7 @@ export const config: Config = {
             height={height}
             style={{ maxWidth: "100%", height: "auto" }}
           />
+        ) : null
       ),
     },
   },
