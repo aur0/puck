@@ -3,8 +3,7 @@ import { useState } from "react";
 import { Dialog, Button, Text, Heading, Box, Container, Section } from "@radix-ui/themes";
 import { typographyFields } from "./components/fields/typography";
 import { imageFields } from "./components/fields/images";
-
-
+import Image from 'next/image';
 
 export const config: Config = {
   components: {
@@ -46,13 +45,15 @@ export const config: Config = {
         height: 100
       },
       render: ({ url, altText, width, height }) => (
-        <img
-          src={url}
-          alt={altText}
-          width={width}
-          height={height}
-          style={{ maxWidth: "100%", height: "auto" }}
-        />
+        <Box>
+          <Image
+            src={url}
+            alt={altText}
+            width={width}
+            height={height}
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Box>
       ),
     },
   },
