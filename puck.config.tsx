@@ -1,6 +1,7 @@
 import type { Config } from "@measured/puck";
 
 import { Box, Heading, Text, Button, Flex } from '@radix-ui/themes';
+import Link from 'next/link';
 
 export const config: Config = {
     components: {
@@ -161,8 +162,10 @@ export const config: Config = {
               </Text>
               <Flex gap="3">
                 {buttons && buttons.map((button, index) => (
-                  <Button key={`button-${button.label}-${index}`} size="3" variant={button.variant} href={button.url}>
-                    {button.label}
+                  <Button key={`button-${button.label}-${index}`} size="3" variant={button.variant} asChild>
+                    <Link href={button.url}>
+                      {button.label}
+                    </Link>
                   </Button>
                 ))}
               </Flex>
