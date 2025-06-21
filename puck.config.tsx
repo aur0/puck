@@ -1,8 +1,9 @@
+import type { Config } from "@measured/puck";
 
 import { Box, Heading, Text, Button, Flex } from '@radix-ui/themes';
 
-const config = {
-  components: {
+export const config: Config = {
+    components: {
     HeroSection1: {
       fields: {
         headingText: {
