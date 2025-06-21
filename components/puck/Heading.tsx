@@ -1,0 +1,129 @@
+import { Heading as RadixHeading } from "@radix-ui/themes";
+
+export const Heading = {
+  Heading: {
+    label: "Heading",
+    fields: {
+      children: { type: "text", label: "Text" },
+      as: {
+        type: "select",
+        options: [
+          { label: "h1", value: "h1" },
+          { label: "h2", value: "h2" },
+          { label: "h3", value: "h3" },
+          { label: "h4", value: "h4" },
+          { label: "h5", value: "h5" },
+          { label: "h6", value: "h6" }
+        ],
+        label: "Heading Level"
+      },
+      size: {
+        type: "select",
+        options: [
+          { label: "Size 1", value: "1" },
+          { label: "Size 2", value: "2" },
+          { label: "Size 3", value: "3" },
+          { label: "Size 4", value: "4" },
+          { label: "Size 5", value: "5" },
+          { label: "Size 6", value: "6" },
+          { label: "Size 7", value: "7" },
+          { label: "Size 8", value: "8" },
+          { label: "Size 9", value: "9" }
+        ],
+        label: "Size"
+      },
+      weight: {
+        type: "select",
+        options: [
+          { label: "Regular", value: "regular" },
+          { label: "Medium", value: "medium" },
+          { label: "Bold", value: "bold" }
+        ],
+        label: "Weight"
+      },
+      align: {
+        type: "select",
+        options: [
+          { label: "Left", value: "left" },
+          { label: "Center", value: "center" },
+          { label: "Right", value: "right" }
+        ],
+        label: "Alignment"
+      },
+      trim: {
+        type: "select",
+        options: [
+          { label: "Normal", value: "normal" },
+          { label: "Start", value: "start" },
+          { label: "End", value: "end" },
+          { label: "Both", value: "both" }
+        ],
+        label: "Trim"
+      },
+      wrap: {
+        type: "select",
+        options: [
+          { label: "Wrap", value: "wrap" },
+          { label: "No Wrap", value: "nowrap" },
+          { label: "Pretty", value: "pretty" },
+          { label: "Balance", value: "balance" }
+        ],
+        label: "Wrap"
+      },
+      color: {
+        type: "select",
+        options: [
+          { label: "Gray", value: "gray" },
+          { label: "Indigo", value: "indigo" },
+          { label: "Cyan", value: "cyan" },
+          { label: "Orange", value: "orange" },
+          { label: "Crimson", value: "crimson" }
+        ],
+        label: "Color"
+      },
+      highContrast: {
+        type: "radio",
+        options: [
+          { label: "Yes", value: true },
+          { label: "No", value: false }
+        ],
+        label: "High Contrast"
+      },
+      truncate: {
+        type: "radio",
+        options: [
+          { label: "Yes", value: true },
+          { label: "No", value: false }
+        ],
+        label: "Truncate"
+      }
+    },
+    defaultProps: {
+      as: "h1",
+      size: "6",
+      weight: "regular",
+      align: "left",
+      trim: "normal",
+      wrap: "wrap",
+      color: "gray",
+      highContrast: false,
+      truncate: false,
+      children: "Your heading text here."
+    },
+    render: ({ children, as, size, weight, align, trim, wrap, color, highContrast, truncate }) => (
+      <RadixHeading
+        as={as}
+        size={size}
+        weight={weight}
+        align={align}
+        trim={trim}
+        wrap={wrap}
+        color={color}
+        highContrast={highContrast}
+        truncate={truncate}
+      >
+        {children}
+      </RadixHeading>
+    ),
+  },
+};
