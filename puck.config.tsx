@@ -1,5 +1,4 @@
 import type { Config } from "@measured/puck";
-import type { CSSProperties } from 'react';
 
 import { Box, Heading, Text, Button, Flex } from '@radix-ui/themes';
 
@@ -113,35 +112,26 @@ export const config: Config = {
       render: ({ headingText, descriptionText, backgroundImage, buttons }) => {
         const safeButtons = Array.isArray(buttons) ? buttons : [];
         
-        const boxStyle: CSSProperties = {
-          display: 'flex' as const,
-          alignItems: 'center' as const,
-          justifyContent: 'center' as const,
-          backgroundColor: 'var(--gray-a2)',
-          position: 'relative' as const,
-          height: '100vh'
-        };
-        
-        const pictureStyle: CSSProperties = {
-          position: 'absolute' as const,
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: -1
-        };
-        
-        const imgStyle: CSSProperties = {
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover' as const,
-          objectPosition: 'center'
-        };
-        
         return (
-          <Box style={boxStyle}>
+          <Flex
+            width="100%"
+            height="100vh"
+            position="relative"
+            align="center"
+            justify="center"
+            css={{
+              backgroundColor: 'var(--gray-a2)'
+            }}
+          >
             {backgroundImage && (
-              <picture style={pictureStyle}>
+              <picture style={{
+                position: 'absolute' as const,
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: -1
+              }}>
                 <source 
                   srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/\.[^.]+$/, '')}-medium.webp`}
                   media="(max-width: 768px)"
@@ -158,7 +148,12 @@ export const config: Config = {
                 <img
                   src={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename}`}
                   alt="Hero background"
-                  style={imgStyle}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover' as const,
+                    objectPosition: 'center'
+                  }}
                 />
               </picture>
             )}
@@ -175,7 +170,7 @@ export const config: Config = {
                 ))}
               </Flex>
             </Flex>
-          </Box>
+          </Flex>
         );
       },
     },
