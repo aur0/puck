@@ -1,4 +1,3 @@
-import type { Config } from "@measured/puck";
 
 import { Box, Heading, Text, Button, Flex } from '@radix-ui/themes';
 
