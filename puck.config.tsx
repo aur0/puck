@@ -119,9 +119,6 @@ export const config: Config = {
             position="relative"
             align="center"
             justify="center"
-            css={{
-              backgroundColor: 'var(--gray-a2)'
-            }}
           >
             {backgroundImage && (
               <picture style={{
