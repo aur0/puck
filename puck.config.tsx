@@ -165,9 +165,9 @@ export const config: Config = {
               </picture>
             )}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
-              <h1 className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{headingText}</h1>
-              <p className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500" style={{ fontSize: '1.25rem', maxWidth: '600px' }}>{descriptionText}</p>
-              <div className="motion-opacity-in-0 motion-preset-slide-down motion-delay-600 motion-duration-500" style={{ display: 'flex', gap: '1rem' }}>
+              <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{headingText}</h1>
+              <p style={{ fontSize: '1.25rem', maxWidth: '600px' }}>{descriptionText}</p>
+              <div style={{ display: 'flex', gap: '1rem' }}>
                 {safeButtons.map((button, index) => (
                   <Link key={`button-${button.label}-${index}`} href={button.url}>
                     <button
