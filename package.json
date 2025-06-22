@@ -29,6 +29,7 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "eslint-config-custom": "*",
+    "tailwindcss-intersect": "^2.2.0",
     "tailwindcss-motion": "^1.1.1",
     "typescript": "^5.5.4"
   }
