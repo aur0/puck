@@ -1,10 +1,8 @@
 import type { Config } from "@measured/puck";
-
-import { Box, Heading, Text, Button, Flex } from '@radix-ui/themes';
 import Link from 'next/link';
 
 export const config: Config = {
-    components: {
+  components: {
     HeroSection1: {
       fields: {
         headingText: {
@@ -20,11 +18,11 @@ export const config: Config = {
           fetchList: async () => {
             const response = await fetch('/api/get-images');
             const data = await response.json();
-    
+
             if (!response.ok) {
               throw new Error(data.error || 'Failed to fetch images');
             }
-    
+
             return data.images.map(img => ({
               filename: img.filename,
               thumbnail: img.thumbnail,
@@ -32,8 +30,6 @@ export const config: Config = {
             }));
           },
           getItemSummary: (item) => item.filename,
-    
-          // ✨ This renders a React component for each row
           mapRow: (item) => ({
             thumbnail: (
               <img
@@ -46,14 +42,11 @@ export const config: Config = {
             ),
             filename: item.filename
           }),
-    
-          // This determines what gets stored in page data
-          mapProp: (item) => ({ 
+          mapProp: (item) => ({
             thumbnail: item.thumbnail,
             filename: item.filename,
             project_id: item.project_id
           }),
-    
           showSearch: true,
           placeholder: "Select a background image"
         },
@@ -112,34 +105,50 @@ export const config: Config = {
       },
       render: ({ headingText, descriptionText, backgroundImage, buttons }) => {
         const safeButtons = Array.isArray(buttons) ? buttons : [];
-        
+
+        const variantStyles: Record<string, React.CSSProperties> = {
+          solid: { backgroundColor: '#000', color: '#fff', border: 'none' },
+          outline: { border: '2px solid #000', background: 'transparent', color: '#000' },
+          soft: { backgroundColor: '#f4f4f4', color: '#000', border: 'none' },
+          classic: { backgroundColor: '#eee', color: '#333', border: '1px solid #ccc' },
+          surface: { backgroundColor: '#fff', color: '#000', border: '1px solid #e0e0e0' },
+          ghost: { background: 'transparent', color: '#000', border: 'none' },
+        };
+
         return (
-          <Flex
-            width="100%"
-            height="100vh"
-            position="relative"
-            align="center"
-            justify="center"
+          <div
+            style={{
+              width: '100%',
+              height: '100vh',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              padding: '1rem'
+            }}
           >
             {backgroundImage && (
-              <picture style={{
-                position: 'absolute' as const,
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: -1
-              }}>
-                <source 
+              <picture
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: -1
+                }}
+              >
+                <source
                   srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/\.[^.]+$/, '')}-medium.webp`}
                   media="(max-width: 768px)"
                   type="image/webp"
                 />
-                <source 
+                <source
                   srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/(\.[^.]+)$/, '-medium$1')}`}
                   media="(max-width: 768px)"
                 />
-                <source 
+                <source
                   srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/\.[^.]+$/, '.webp')}`}
                   type="image/webp"
                 />
@@ -149,28 +158,35 @@ export const config: Config = {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover' as const,
+                    objectFit: 'cover',
                     objectPosition: 'center'
                   }}
                 />
               </picture>
             )}
-            <Flex direction="column" align="center" gap="5">
-              <Heading size="8">{headingText}</Heading>
-              <Text size="4">
-                {descriptionText}
-              </Text>
-              <Flex gap="3">
-                {buttons && buttons.map((button, index) => (
-                  <Button key={`button-${button.label}-${index}`} size="3" variant={button.variant} asChild>
-                    <Link href={button.url}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
+              <h1 className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{headingText}</h1>
+              <p className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500" style={{ fontSize: '1.25rem', maxWidth: '600px' }}>{descriptionText}</p>
+              <div className="motion-opacity-in-0 motion-preset-slide-down motion-delay-600 motion-duration-500" style={{ display: 'flex', gap: '1rem' }}>
+                {safeButtons.map((button, index) => (
+                  <Link key={`button-${button.label}-${index}`} href={button.url}>
+                    <button
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        fontSize: '1rem',
+                        borderRadius: '6px',
+                        textDecoration: 'none',
+                        ...variantStyles[button.variant || 'solid'],
+                        cursor: 'pointer'
+                      }}
+                    >
                       {button.label}
-                    </Link>
-                  </Button>
+                    </button>
+                  </Link>
                 ))}
-              </Flex>
-            </Flex>
-          </Flex>
+              </div>
+            </div>
+          </div>
         );
       },
     },
