@@ -33,7 +33,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ onColorChange }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ color: newColor }),
+        body: JSON.stringify({ 
+          color: newColor,
+          path: '/api/theme'
+        }),
       });
 
       if (!response.ok) {
