@@ -2,6 +2,25 @@ import type { Config } from "@measured/puck";
 import Link from 'next/link';
 
 export const config: Config = {
+  root: {
+    fields: {
+      title: { type: "text" },
+      description: {
+        type: "textarea",
+        label: "Page Description",
+        placeholder: "Enter page description"
+      },
+    },
+    render: ({ children, title, description }) => {
+      return (
+        <>
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          {children}
+        </>
+      );
+    }
+  },
   components: {
     Navbar1: {
       fields: {
@@ -259,163 +278,146 @@ export const config: Config = {
         );
       },
     },
-    TwoColumn1: {
+
+    HeroSection2: {
       fields: {
-        heading: {
+        header: {
           type: "text",
-          label: "Heading Text",
-          placeholder: "Enter heading text"
+          label: "Header Text",
         },
-        content: {
+        paragraph: {
           type: "text",
-          label: "Content Text",
-          placeholder: "Enter content text"
+          label: "Paragraph Text",
         },
-        image: {
+        imagePath: {
           type: "text",
-          label: "Image URL",
-          placeholder: "Enter image URL"
+          label: "Image Path",
         },
         imageAlt: {
           type: "text",
           label: "Image Alt Text",
-          placeholder: "Enter image alt text"
         },
-        backgroundColor: {
-          type: "text",
-          label: "Background Color",
-          placeholder: "#ffffff"
-        }
       },
       defaultProps: {
-        heading: "Two Column Section",
-        content: "This is a two-column layout with text on the left and image on the right. Perfect for showcasing content with visual elements.",
-        image: "https://via.placeholder.com/600x400",
-        imageAlt: "Placeholder image",
-        backgroundColor: "#ffffff"
+        header: "Your Heading",
+        paragraph: "This is a paragraph with supporting information.",
+        imagePath: "/your-image-path.jpg",
+        imageAlt: "Descriptive alt"
       },
-      render: ({ heading, content, image, imageAlt, backgroundColor }) => {
+      render: ({ header, paragraph, imagePath, imageAlt }) => {
         return (
-          <div className="mx-auto max-w-4xl overflow-x-hidden px-8 py-4" style={{ backgroundColor }}>
-            <div className="mt-8 flex flex-col md:flex-row gap-8">
-              <div className="flex-1">
-                <h2 className="intersect-once intersect:motion-preset-slide-right flex-wrap pb-6 text-xl font-bold opacity-70 motion-delay-[700ms]">
-                  {heading}
-                </h2>
-                <p className="text-lg leading-relaxed text-gray-700 intersect-once intersect:motion-preset-slide-right motion-delay-[700ms]">{content}</p>
-              </div>
-              <div className="flex-1">
-                <img 
-                  src={image} 
-                  alt={imageAlt} 
-                  className="w-full rounded-lg shadow-lg intersect-once intersect:motion-preset-slide-left motion-delay-[700ms]"
-                />
+          <section className="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2 sm:items-stretch">
+            <div className="p-8 md:p-12 lg:px-16 lg:py-24">
+              <div className="mx-auto max-w-xl flex flex-col justify-center h-full">
+                <div className="intersect-once intersect:motion-preset-slide-right intersect:opacity-100 opacity-0 transition-opacity duration-500">
+                  <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">{header}</h2>
+                </div>
+
+                <div className="intersect-once intersect:motion-preset-slide-right intersect:opacity-100 opacity-0 transition-opacity duration-500 mt-4 md:mt-8">
+                  <p className="text-gray-500">{paragraph}</p>
+                </div>
+
+                <div className="mt-4 md:mt-8">
+                  <button
+                    className="inline-block rounded-sm bg-emerald-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 focus:ring-3 focus:ring-yellow-400 focus:outline-hidden"
+                  >
+                    Get Started Today
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+
+            <div className="intersect-once intersect:motion-preset-slide-left intersect:opacity-100 opacity-0 transition-opacity duration-500">
+              <img
+                src={imagePath}
+                alt={imageAlt}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </section>
         );
-      }
+      },
     },
+
+
     HeadingBlock: {
       fields: {
-        heading: {
+        header: {
           type: "text",
-          label: "Heading Text",
-          placeholder: "Enter heading text"
+          label: "Header Text",
         },
-        textAlign: {
-          type: "radio",
-          label: "Text Alignment",
+        paragraph: {
+          type: "text",
+          label: "Paragraph Text",
+        },
+        imagePath: {
+          type: "text",
+          label: "Image Path",
+        },
+        imageAlt: {
+          type: "text",
+          label: "Image Alt Text",
+        },
+        textMotion: {
+          type: "select",
+          label: "Text Motion Direction",
           options: [
-            { label: "Left", value: "text-left" },
-            { label: "Center", value: "text-center" },
-            { label: "Right", value: "text-right" }
-          ]
+            { label: "Slide Right", value: "intersect:motion-preset-slide-right" },
+            { label: "Slide Left", value: "intersect:motion-preset-slide-left" },
+            { label: "Slide Up", value: "intersect:motion-preset-slide-up" },
+            { label: "Slide Down", value: "intersect:motion-preset-slide-down" },
+            { label: "fade", value: "intersect:motion-preset-fade" },
+          ],
         },
-        solutions: {
-          type: "array",
-          arrayFields: {
-            title: { type: "text" },
-            description: { type: "text" },
-            logoUrl: { type: "text" },
-            logoAlt: { type: "text" },
-            backgroundColor: { 
-              type: "text",
-              placeholder: "#000000"
-            }
-          },
-          defaultItemProps: {
-            title: "Shopify",
-            description: "Join thousands of Shopify users bringing their stores to life with Rombo.",
-            logoUrl: "https://cdn.sanity.io/images/xrq4swux/production/ea11cf5ade02dbf180e5a8c277a281141d58d6f4-110x124.svg?fit=max&auto=format",
-            logoAlt: "shopify logo",
-            backgroundColor: "#008837"
-          },
-          getItemSummary: (item) => item.title,
-          min: 2,
-          max: 3
-        }
+        imageMotion: {
+          type: "select",
+          label: "Image Motion Direction",
+          options: [
+            { label: "Slide Right", value: "intersect:motion-preset-slide-right" },
+            { label: "Slide Left", value: "intersect:motion-preset-slide-left" },
+            { label: "Slide Up", value: "intersect:motion-preset-slide-up" },
+            { label: "Slide Down", value: "intersect:motion-preset-slide-down" },
+            { label: "fade", value: "intersect:motion-preset-fade" },
+          ],
+        },
       },
       defaultProps: {
-        heading: "SOLUTIONS",
-        textAlign: "text-center",
-        solutions: [
-          {
-            title: "Shopify",
-            description: "Join thousands of Shopify users bringing their stores to life with Rombo.",
-            logoUrl: "https://cdn.sanity.io/images/xrq4swux/production/ea11cf5ade02dbf180e5a8c277a281141d58d6f4-110x124.svg?fit=max&auto=format",
-            logoAlt: "shopify logo",
-            backgroundColor: "#008837"
-          },
-          {
-            title: "TailwindCSS",
-            description: "Add intricate animations to your frontend in no time at all.",
-            logoUrl: "https://cdn.sanity.io/images/xrq4swux/production/49f386e7cb98664a6645577735448c1062daeb57-54x33.svg?fit=max&auto=format",
-            logoAlt: "tailwind logo",
-            backgroundColor: "#00b48a"
-          },
-          {
-            title: "Figma",
-            description: "Add interactivity to your designs without leaving the Figma canvas.",
-            logoUrl: "https://cdn.sanity.io/images/xrq4swux/production/8ba9090052032bc90e8cfa9a83583fdf69c7d96b-413x620.svg?fit=max&auto=format",
-            logoAlt: "figma logo",
-            backgroundColor: "#333333"
-          }
-        ]
+        header: "Your Heading",
+        paragraph: "This is a paragraph with supporting information.",
+        imagePath: "/your-image-path.jpg",
+        imageAlt: "Descriptive alt",
+        textMotion: "intersect:motion-preset-slide-right",
+        imageMotion: "intersect:motion-preset-slide-left",
       },
-      render: ({ heading, solutions, textAlign }) => {
-        // Ensure solutions is always an array
-        const solutionsArray = Array.isArray(solutions) ? solutions : [];
-        
+      render: ({ header, paragraph, imagePath, imageAlt, textMotion, imageMotion, puck }) => {
         return (
-          <main className="mx-auto max-w-4xl overflow-x-hidden px-8 py-4">
-            <h2 className={`intersect-once intersect:motion-preset-fade flex-wrap pb-6 text-xl font-bold opacity-70 motion-delay-[700ms] ${textAlign}`}>
-              {heading}
-            </h2>
-            <div className="mt-10 flex flex-col gap-10 sm:flex-row sm:gap-4">
-              {solutionsArray.map((solution, index) => (
-                <div 
-                  key={index}
-                  className="intersect-once intersect:motion-preset-slide-left flex-1 rounded-2xl p-4 motion-delay-[1000ms] motion-ease-spring-bouncier"
-                  style={{ 
-                    backgroundColor: solution.backgroundColor,
-                    animationDelay: `${1000 + (index * 300)}ms`
-                  }}
-                >
-                  <img 
-                    alt={solution.logoAlt} 
-                    className="-mt-12 mb-4 size-20 bg-blend-exclusion" 
-                    src={solution.logoUrl}
-                  />
-                  <h3 className="intersect-once intersect:motion-preset-fade mb-2 text-2xl font-bold">{solution.title}</h3>
-                  <p className="intersect-once intersect:motion-preset-fade text-sm opacity-80">{solution.description}</p>
+          <section className="overflow-hidden bg-gray-50 md:grid md:grid-cols-2 md:items-stretch">
+            <div className="p-8 md:p-12 lg:px-16 lg:py-24">
+              <div className="mx-auto max-w-xl flex flex-col justify-center h-full">
+                <div className={`intersect-once ${textMotion} intersect:opacity-100 opacity-0 transition-opacity duration-500 delay-200`}>
+                  <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">{header}</h2>
                 </div>
-              ))}
+    
+                <div className={`intersect-once ${textMotion} intersect:opacity-100 opacity-0 transition-opacity duration-500 mt-4 md:mt-8 delay-400`}>
+                  <p style={{ color: puck?.metadata?.theme?.colorPrimary }}>
+                    {paragraph}
+                  </p>
+                </div>
+              </div>
             </div>
-          </main>
+    
+            <div className={`intersect-once ${imageMotion} intersect:opacity-100 opacity-0 transition-opacity duration-500 m-4 md:m-8 lg:m-16 xl:m-24 2xl:m-32`}>
+              <img
+                src={imagePath}
+                alt={imageAlt}
+                className="w-full h-auto object-cover rounded-2xl"
+              />
+            </div>
+          </section>
         );
-      }
-    }
+      },
+    },
+    
   }
 };
 

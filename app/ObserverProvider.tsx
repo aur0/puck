@@ -1,7 +1,7 @@
 "use client";
 import { Observer } from "tailwindcss-intersect";
 import { useEffect } from "react";
-
+ 
 export default function ObserverProvider({
   children,
 }: {
@@ -10,6 +10,6 @@ export default function ObserverProvider({
   useEffect(() => {
     Observer.start();
   }, []);
-
+ 
   return <>{children}</>;
 }
