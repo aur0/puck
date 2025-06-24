@@ -14,6 +14,7 @@ import { Client } from "./client";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getPage } from "../../lib/get-page";
+import { getTheme } from "../../lib/get-theme";
 
 export async function generateMetadata({
   params,
@@ -36,12 +37,13 @@ export default async function Page({
   const { puckPath = [] } = await params;
   const path = `/${puckPath.join("/")}`;
   const data = getPage(path);
+  const theme = getTheme();
 
   if (!data) {
     return notFound();
   }
 
-  return <Client data={data} />;
+  return <Client data={data} theme={theme} />;
 }
 
 // Force Next.js to produce static pages: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic
