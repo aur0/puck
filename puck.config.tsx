@@ -1,5 +1,6 @@
 import type { Config } from "@measured/puck";
 import Link from 'next/link';
+import { FieldLabel } from "@measured/puck";
 
 export const config: Config = {
   root: {
@@ -9,7 +10,7 @@ export const config: Config = {
         type: "textarea",
         label: "Page Description",
         placeholder: "Enter page description"
-      },
+      }
     },
     render: ({ children, title, description }) => {
       return (
@@ -91,6 +92,8 @@ export const config: Config = {
         );
       },
     },
+
+    
     HeroSection1: {
       fields: {
         headingText: {
@@ -399,7 +402,7 @@ export const config: Config = {
                 </div>
     
                 <div className={`intersect-once ${textMotion} intersect:opacity-100 opacity-0 transition-opacity duration-500 mt-4 md:mt-8 delay-400`}>
-                  <p style={{ color: puck?.metadata?.theme?.colorPrimary }}>
+                  <p style={{ color: puck?.metadata?.colorPrimary }}>
                     {paragraph}
                   </p>
                 </div>
