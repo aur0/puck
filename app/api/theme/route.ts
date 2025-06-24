@@ -16,14 +16,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { color, path } = await request.json();
+    const { color } = await request.json();
     const themeData = {
       colorPrimary: color
     };
     fs.writeFileSync("theme.json", JSON.stringify(themeData, null, 2));
 
-    // Revalidate cache using the same path pattern as puck route
-    revalidatePath(path);
+    // Revalidate all pages to update their theme
+    // Note: This assumes your pages are under /[...puckPath]
+    revalidatePath('/');
+    revalidatePath('/[...puckPath]');
 
     return NextResponse.json({ status: "ok", data: themeData });
   } catch (error) {
