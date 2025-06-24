@@ -17,6 +17,7 @@ import "@measured/puck/puck.css";
 import { Client } from "./client";
 import { Metadata } from "next";
 import { getPage } from "../../../lib/get-page";
+import { getTheme } from "../../../lib/get-theme";
 
 export async function generateMetadata({
   params,
@@ -46,8 +47,9 @@ export default async function Page({
   const { puckPath = [] } = await params;
   const path = `/${puckPath.join("/")}`;
   const data = getPage(path);
+  const theme = getTheme();
 
-  return <Client path={path} data={data || {}} />;
+  return <Client path={path} data={data || {}} theme={theme} />;
 }
 
 export const dynamic = "force-dynamic";

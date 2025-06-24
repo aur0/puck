@@ -10,13 +10,19 @@ export const config: Config = {
         type: "textarea",
         label: "Page Description",
         placeholder: "Enter page description"
+      },
+      seoKeywords: {
+        type: "textarea",
+        label: "SEO Keywords",
+        placeholder: "Enter comma-separated keywords for SEO"
       }
     },
-    render: ({ children, title, description }) => {
+    render: ({ children, title, description, seoKeywords }) => {
       return (
         <>
           <title>{title}</title>
           <meta name="description" content={description} />
+          <meta name="keywords" content={seoKeywords} />
           {children}
         </>
       );
