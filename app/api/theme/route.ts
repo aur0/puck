@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
-import fs from 'fs/promises';
+import fs from 'fs';
 
 export async function POST(request: Request) {
   try {
@@ -10,10 +9,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid color value' }, { status: 400 });
     }
 
-    const themePath = path.join(process.cwd(), 'theme.json');
-    const theme = { colorPrimary };
+    const themeData = {
+      colorPrimary
+    };
+
+    const themePath = 'theme.json';
     
-    await fs.writeFile(themePath, JSON.stringify(theme, null, 2));
+    // Create file if it doesn't exist
+    if (!fs.existsSync(themePath)) {
+      fs.writeFileSync(themePath, JSON.stringify(themeData, null, 2));
+    } else {
+      // Read existing data and update
+      const existingData = JSON.parse(fs.readFileSync(themePath, 'utf-8'));
+      const updatedData = { ...existingData, ...themeData };
+      fs.writeFileSync(themePath, JSON.stringify(updatedData, null, 2));
+    }
     
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -24,9 +34,15 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const themePath = path.join(process.cwd(), 'theme.json');
-    const theme = await fs.readFile(themePath, 'utf-8');
-    return NextResponse.json(JSON.parse(theme));
+    const themePath = 'theme.json';
+    
+    // Return default theme if file doesn't exist
+    if (!fs.existsSync(themePath)) {
+      return NextResponse.json({ colorPrimary: '#000000' });
+    }
+
+    const theme = JSON.parse(fs.readFileSync(themePath, 'utf-8'));
+    return NextResponse.json(theme);
   } catch (error) {
     console.error('Error fetching theme:', error);
     return NextResponse.json({ error: 'Failed to fetch theme' }, { status: 500 });
