@@ -6,21 +6,34 @@ export const config: Config = {
   root: {
     fields: {
       title: { type: "text" },
-      description: {
-        type: "textarea",
-        label: "Page Description",
-        placeholder: "Enter page description"
-      }
+      description: { type: "textarea" },
+      primary: { type: "text" }, // New field for hex
     },
-    render: ({ children, title, description }) => {
+    defaultProps: {
+      title: "DashboardUI",
+      description: "Lorem ipsum",
+      primary: "#FF0000", // Default hex value
+    },
+    render: ({ children, primary }) => {
       return (
-        <>
-          <title>{title}</title>
-          <meta name="description" content={description} />
+        <div>
+          <style>
+            {`
+              .text-primary {
+                color: ${primary};
+              }
+              .bg-primary {
+                background-color: ${primary};
+              }
+              .bg-primary-10 {
+                background-color: ${primary}10;
+              }
+            `}
+          </style>
           {children}
-        </>
+        </div>
       );
-    }
+    },    
   },
   components: {
     Navbar1: {
@@ -256,7 +269,7 @@ export const config: Config = {
               </picture>
             )}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
-              <h1 className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{headingText}</h1>
+              <h1 className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500 text-primary" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{headingText}</h1>
               <p className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500" style={{ fontSize: '1.25rem', maxWidth: '600px' }}>{descriptionText}</p>
               <div className="motion-opacity-in-0 motion-preset-slide-down motion-delay-600 motion-duration-500" style={{ display: 'flex', gap: '1rem' }}>
                 {safeButtons.map((button, index) => (
