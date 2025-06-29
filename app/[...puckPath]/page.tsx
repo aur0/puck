@@ -40,5 +40,6 @@ export default async function Page({
   return <Client data={data} />;
 }
 
-// Force Next.js to produce static pages
+// Force Next.js to produce static pages with 24 hour cache
 export const dynamic = "force-static";
+export const revalidate = 86400; // 24 hours
