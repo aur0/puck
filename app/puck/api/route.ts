@@ -36,6 +36,6 @@ export async function POST(request: Request) {
       .single();
   }
 
-  revalidatePath(path);
+  //revalidatePath(path);
   return NextResponse.json({ status: "ok" });
 }
