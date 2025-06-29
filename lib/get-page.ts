@@ -1,11 +1,29 @@
 import { Data } from "@measured/puck";
-import fs from "fs";
+import { createClient } from '../utils/supabase/server';
 
-// Replace with call to your database
-export const getPage = (path: string) => {
-  const allData: Record<string, Data> | null = fs.existsSync("database.json")
-    ? JSON.parse(fs.readFileSync("database.json", "utf-8"))
-    : null;
+export const getPage = async (path: string): Promise<Data | null> => {
+  const supabase = await createClient();
+  
+  // Get current user
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  
+  if (authError || !user) {
+    console.error('Authentication error:', authError);
+    return null;
+  }
 
-  return allData ? allData[path] : null;
+  const { data, error } = await supabase
+    .from('pages')
+    .select('data')
+    .eq('path', path)
+    .eq('project_id', process.env.PROJECT_ID)
+    .eq('user_id', user.id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching page:', error);
+    return null;
+  }
+
+  return data?.data as Data | null;
 };

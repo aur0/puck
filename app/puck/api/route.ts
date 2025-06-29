@@ -1,25 +1,56 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
-import fs from "fs";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
+  const supabase = await createClient();
+  
+  // Get user from request
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  
+  if (authError || !user) {
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
   const payload = await request.json();
+  const { path, data } = payload;
 
-  const existingData = JSON.parse(
-    fs.existsSync("database.json")
-      ? fs.readFileSync("database.json", "utf-8")
-      : "{}"
-  );
+  // First try to update existing page
+  const { error: updateError } = await supabase
+    .from('pages')
+    .update({ data })
+    .eq('path', path)
+    .eq('project_id', process.env.PROJECT_ID)
+    .eq('user_id', user.id)
+    .single();
 
-  const updatedData = {
-    ...existingData,
-    [payload.path]: payload.data,
-  };
+  if (updateError) {
+    // If update failed (likely because page doesn't exist), try to insert new page
+    const { error: insertError } = await supabase
+      .from('pages')
+      .insert({
+        path,
+        data,
+        project_id: process.env.PROJECT_ID,
+        user_id: user.id
+      })
+      .select()
+      .single();
 
-  fs.writeFileSync("database.json", JSON.stringify(updatedData));
+    if (insertError) {
+      console.error('Error saving page:', insertError);
+      return NextResponse.json(
+        { error: "Failed to save page" },
+        { status: 500 }
+      );
+    }
+  }
 
   // Purge Next.js cache
-  revalidatePath(payload.path);
+  revalidatePath(path);
 
   return NextResponse.json({ status: "ok" });
 }
