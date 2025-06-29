@@ -3,8 +3,11 @@ import type { NextRequest } from "next/server";
 import { updateSession } from "./utils/supabase/middleware";
 
 export async function middleware(req: NextRequest) {
-  // First handle the auth session
-  const response = await updateSession(req);
+  // Only check auth session for /puck routes
+  if (req.nextUrl.pathname.startsWith('/puck')) {
+    const response = await updateSession(req);
+    return response;
+  }
 
   // Then apply your existing URL rewriting logic
   if (req.method === "GET") {
@@ -24,7 +27,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
