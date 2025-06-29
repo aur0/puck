@@ -1,11 +1,17 @@
 import { Data } from "@measured/puck";
-import { createClient } from '../utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const getPage = async (path: string): Promise<Data | null> => {
   try {
-    const supabase = await createClient();
-    
-    // First try to get the page without authentication check
     const { data, error: fetchError } = await supabase
       .from('pages')
       .select('data')
