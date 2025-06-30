@@ -3,6 +3,9 @@
 @plugin 'tailwindcss-motion';
 @plugin 'tailwindcss-intersect';
 
+/* the props */
+@import "open-props/fonts";
+
 
 body {
   margin: 0;

@@ -272,10 +272,10 @@ export const config: Config = {
               </picture>
             )}
             <div className="flex flex-col items-center gap-5">
-              <h1 className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500 text-primary text-4xl font-bold max-w-2xl">
+              <h1 style={{ fontSize: 'var(--font-size-5)' }} className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500 text-primary font-bold max-w-2xl">
                 {heading}
               </h1>
-              <p className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500 text-primary text-xl max-w-3xl">
+              <p style={{ fontSize: 'var(--font-size-3)' }} className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500 text-primary text-xl max-w-3xl">
                 {description}
               </p>
               <div className="motion-opacity-in-0 motion-preset-slide-down motion-delay-600 motion-duration-500">
@@ -295,7 +295,121 @@ export const config: Config = {
       },
     },
 
-   
+    HeroSection2: {
+      fields: {
+        heading: {
+          type: "text",
+          label: "Heading Text",
+          placeholder: "Enter heading text"
+        },
+        description: {
+          type: "text",
+          label: "Description Text",
+          placeholder: "Enter description text"
+        },
+        backgroundImage: {
+          type: "external",
+          fetchList: async () => {
+            const response = await fetch('/api/get-images');
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Failed to fetch images');
+            }
+
+            return data.images.map(img => ({
+              filename: img.filename,
+              thumbnail: img.thumbnail,
+              project_id: img.project_id
+            }));
+          },
+          getItemSummary: (item) => item.filename,
+          mapRow: (item) => ({
+            thumbnail: (
+              <img
+                src={item.thumbnail}
+                alt={item.filename}
+                width="40"
+                height="40"
+                style={{ objectFit: 'cover', borderRadius: '4px' }}
+              />
+            ),
+            filename: item.filename
+          }),
+          mapProp: (item) => ({
+            thumbnail: item.thumbnail,
+            filename: item.filename,
+            project_id: item.project_id
+          }),
+          showSearch: true,
+          placeholder: "Select a background image"
+        },
+        buttonLabel: {
+          type: "text",
+          label: "Button Label",
+          placeholder: "Enter button label"
+        },
+        buttonUrl: {
+          type: "text",
+          label: "Button URL",
+          placeholder: "Enter button URL"
+        }
+      },
+      defaultProps: {
+        heading: "Your Free Guide to Discover the Wild Beauty of the Lake District",
+        description: "Wander through breathtaking landscapes, timeless villages, and peaceful lakes — your Lake District adventure starts here.",
+        backgroundImage: null,
+        buttonLabel: "GET YOUR GUIDE",
+        buttonUrl: "#get-started"
+      },
+      render: ({ heading, description, backgroundImage, buttonLabel, buttonUrl }) => {
+        return (
+          <div className="w-full h-screen relative flex items-center justify-center text-center p-4">
+            {backgroundImage && (
+              <picture className="absolute top-0 left-0 w-full h-full z-[-1]">
+                <source
+                  srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/\.[^.]+$/, '')}-medium.webp`}
+                  media="(max-width: 768px)"
+                  type="image/webp"
+                />
+                <source
+                  srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/(\.[^.]+)$/, '-medium$1')}`}
+                  media="(max-width: 768px)"
+                />
+                <source
+                  srcSet={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename.replace(/\.[^.]+$/, '.webp')}`}
+                  type="image/webp"
+                />
+                <img
+                  src={`https://cdn.warrenwebsites.co.uk/${backgroundImage.project_id}/${backgroundImage.filename}`}
+                  alt="Hero background"
+                  className="w-full h-full object-cover object-center"
+                />
+              </picture>
+            )}
+            <div className="flex flex-col items-center gap-5">
+              <h1 style={{ fontSize: 'var(--font-size-5)' }} className="motion-opacity-in-0 motion-preset-slide-down motion-delay-200 motion-duration-500 text-primary font-bold max-w-2xl">
+                {heading}
+              </h1>
+              <p style={{ fontSize: 'var(--font-size-3)' }} className="motion-opacity-in-0 motion-preset-slide-down motion-delay-400 motion-duration-500 text-primary text-xl max-w-3xl">
+                {description}
+              </p>
+              <div className="motion-opacity-in-0 motion-preset-slide-down motion-delay-600 motion-duration-500">
+                {buttonLabel && buttonUrl && (
+                  <Link href={buttonUrl}>
+                    <button
+                      className="px-6 py-3 rounded-lg text-base cursor-pointer transition-colors duration-200 button-primary"
+                    >
+                      {buttonLabel}
+                    </button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      },
+    },
     
   }
 };
